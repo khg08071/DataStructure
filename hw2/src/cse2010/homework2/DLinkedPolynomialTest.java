@@ -36,33 +36,33 @@ class DLinkedPolynomialTest {
         assertEquals("4.0x^3+3.0x^2+2.0x+1.0", f.toString());
     }
 
-//    @Test
-//    void should_generate_non_empty_polynomial2() {
-//        f.addTerm(1.0, 3);
-//        f.addTerm(3.0, 1);
-//        f.addTerm(2.0, 2);
-//        f.addTerm(4.0, 0);
-//
-//        assertEquals(4, f.termCount());
-//        assertEquals(3, f.getDegree());
-//        assertEquals("1.0x^3+2.0x^2+3.0x+4.0", f.toString());
-//    }
-//
-//    @Test
-//    void should_merge_terms_with_the_same_exponents() {
-//        f.addTerm(2.0, 2);
-//        f.addTerm(1.0, 3);
-//        f.addTerm(3.0, 1);
-//        f.addTerm(4.0, 0);
-//        f.addTerm(2.0, 2);
-//        f.addTerm(1.0, 3);
-//        f.addTerm(4.0, 0);
-//        f.addTerm(3.0, 1);
-//
-//        assertEquals(4, f.termCount());
-//        assertEquals(3, f.getDegree());
-//        assertEquals("2.0x^3+4.0x^2+6.0x+8.0", f.toString());
-//    }
+    @Test
+    void should_generate_non_empty_polynomial2() {
+        f.addTerm(1.0, 3);
+        f.addTerm(3.0, 1);
+        f.addTerm(2.0, 2);
+        f.addTerm(4.0, 0);
+
+        assertEquals(4, f.termCount());
+        assertEquals(3, f.getDegree());
+        assertEquals("1.0x^3+2.0x^2+3.0x+4.0", f.toString());
+    }
+
+    @Test
+    void should_merge_terms_with_the_same_exponents() {
+        f.addTerm(2.0, 2);
+        f.addTerm(1.0, 3);
+        f.addTerm(3.0, 1);
+        f.addTerm(4.0, 0);
+        f.addTerm(2.0, 2);
+        f.addTerm(1.0, 3);
+        f.addTerm(4.0, 0);
+        f.addTerm(3.0, 1);
+
+        assertEquals(4, f.termCount());
+        assertEquals(3, f.getDegree());
+        assertEquals("2.0x^3+4.0x^2+6.0x+8.0", f.toString());
+    }
 
 
     @Test
@@ -75,7 +75,7 @@ class DLinkedPolynomialTest {
 
         assertEquals("3.0x^3+2.0x+1.0", f.add(g).toString());
     }
-/*
+
     @Test
     void should_add_two_polynomials() {
         f.addTerm(10.0, 8);
@@ -105,7 +105,7 @@ class DLinkedPolynomialTest {
         f.addTerm(3.0, 3);
 
         Polynomial g = new DLinkedPolynomial();
-        g.addTerm(1.0, 0);
+        //g.addTerm(1.0, 0);
 
         assertEquals("3.0x^3+2.0x+1.0", f.mult(g).toString());
     }
@@ -217,5 +217,5 @@ class DLinkedPolynomialTest {
 
         assertThrows(NoSuchTermExistsException.class, () -> f.removeTerm(1));
     }
-    */
+    
 }

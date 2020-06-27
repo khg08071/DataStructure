@@ -107,9 +107,7 @@ public class DLinkedPolynomial implements Polynomial {
         }
 
       return otherPoly;
-        /*
-            Complete the code here
-         */
+       
        
     }
 
@@ -119,44 +117,36 @@ public class DLinkedPolynomial implements Polynomial {
 
     @Override
     public Polynomial mult(final Polynomial p) {
-    	DLinkedPolynomial otherPoly = new DLinkedPolynomial();
-    	DLinkedPolynomial resultPoly = new DLinkedPolynomial();
-    	otherPoly = (DLinkedPolynomial) p;
-    	Node<Term> n1 = this.list.getFirstNode();
-    	Node<Term> n2 = otherPoly.list.getFirstNode();
-    	Term zero = new Term(0.0, 0);
-    	Node<Term> zero_n = new Node<Term>(zero);
-    	if(p.getCoefficient(0) == 1 && p.termCount() == 1){
-            return this;
-         }
-    	if(this.getCoefficient(0) == 1 && this.termCount() == 1){
-            return p;
-         }
-    	if(this.termCount() == 0 && otherPoly.termCount() != 0) {
-    		resultPoly.addTerm(0.0, 0);
-    		return resultPoly;
+    DLinkedPolynomial resultpoly = new DLinkedPolynomial();
+    DLinkedPolynomial other = new DLinkedPolynomial();
+    other = (DLinkedPolynomial) p;
+    Node<Term> flag1 = this.list.getFirstNode();
+    Node<Term> flag2 = other.list.getFirstNode();
+   
+    while(true) {
+    	if(flag1 == this.list.getLastNode() && flag2 == other.list.getLastNode()) {
+    		int ex = flag1.getInfo().expo + flag2.getInfo().expo;
+			double cof = flag1.getInfo().coeff +flag2.getInfo().coeff;
+			resultpoly.addTerm(cof, ex);
+			break;
     	}
-    	if(otherPoly.termCount() == 0 && this.termCount() != 0) {
-    		resultPoly.addTerm(0.0, 0);
-    		return resultPoly;
+    	else {
+    		if(flag2 == other.list.getLastNode()) {
+    			int ex = flag1.getInfo().expo + flag2.getInfo().expo;
+    			double cof = flag1.getInfo().coeff +flag2.getInfo().coeff;
+    			resultpoly.addTerm(cof, ex);
+    			flag2 = other.list.getFirstNode();
+    			flag1 = flag1.getNext();
+    		}
+    		else {
+    			int ex = flag1.getInfo().expo + flag2.getInfo().expo;
+    			double cof = flag1.getInfo().coeff +flag2.getInfo().coeff;
+    			resultpoly.addTerm(cof, ex);
+    			flag2 = flag2.getNext();
+    		}
     	}
-    	if(this.termCount() != 0 && otherPoly.termCount() != 0) {
-    		for(int i =0; i < this.termCount(); i++) {
-        		for(int j = 0; j < otherPoly.termCount(); j++) {
-        			Term newTerm = new Term(0.0,0);
-        			newTerm = new Term(n1.getInfo().coeff * n2.getInfo().coeff, n1.getInfo().expo + n2.getInfo().expo);
-        			resultPoly.addTerm(newTerm.coeff, newTerm.expo);
-        			n2 = n2.getNext();       			
-        		}
-        		n2 = otherPoly.list.getFirstNode();
-        		n1.getNext();
-        	}
-    	}
-    	
-    	return resultPoly;
-
-    
-    	
+    }
+    return other;
     }
 
     @Override
@@ -164,52 +154,56 @@ public class DLinkedPolynomial implements Polynomial {
     	Term newTerm = new Term(coeff, expo);
     	Node<Term> newNode = new Node<Term>(newTerm);
     	Node<Term> flag = list.getFirstNode();
-    	if(termCount() == 0) {
+    	if(this.termCount() == 0) {
     		list.addFirst(newNode);
     	}
-    	else if(termCount() == 1) {
-    		if(list.getFirstNode().getInfo().expo > newNode.getInfo().expo) {
+    	else if(this.termCount() == 1) {
+    		if(flag.getInfo().expo > newNode.getInfo().expo) {
     			list.addLast(newNode);
     		}
-    		else if(list.getFirstNode().getInfo().expo == newNode.getInfo().expo) {
-    			Term temp = new Term(list.getFirstNode().getInfo().coeff + coeff, expo);
-    			list.getFirstNode().setInfo(temp);
+    		else if(flag.getInfo().expo == newNode.getInfo().expo) {
+    			Node<Term> temp = list.getFirstNode();
+    			double cof = temp.getInfo().coeff;
+    			Term tmp = new Term(coeff + cof , expo);
+    			temp.setInfo(tmp);
     		}
     		else {
     			Node<Term> temp = list.getFirstNode();
-    			list.remove(temp);
+    			list.removeFirst();
     			list.addFirst(newNode);
     			list.addLast(temp);
     		}
     	}
-    	
     	else {
-    		for(int i = 0; i < termCount(); i++) {
-    			if(flag!=list.getFirstNode()) {
-    				if((flag.getInfo().expo > newNode.getInfo().expo) && (newNode.getInfo().expo > flag.getNext().getInfo().expo)) {
-        				list.addAfter(flag, newNode);
-        				break;
-        			}
+    		while(true) {
+    			if(flag.getInfo().expo > newNode.getInfo().expo) {
+    				if(flag == list.getLastNode()) {
+    					list.addLast(newNode);
+    					break;
+    				}
+    				else {
+    					flag = flag.getNext();
+    				}
+    				
     			}
-    			if(newNode.getInfo().expo > flag.getInfo().expo && flag == list.getFirstNode()) {
-    				list.addFirst(newNode);
-    				break;
-    			}
-    			if(flag.getInfo().expo > newNode.getInfo().expo && flag == list.getLastNode()) {
-    				list.addLast(newNode);
-    				break;
-    			}
-    			if(flag.getInfo().expo == newNode.getInfo().expo) {
-    				Term temp = new Term(coeff +flag.getInfo().coeff, expo);
-    				flag.setInfo(temp);
-    				break;
+    			else if(flag.getInfo().expo == newNode.getInfo().expo) {
+    				double cof = flag.getInfo().coeff;
+        			Term tmp = new Term(coeff + cof , expo);
+        			flag.setInfo(tmp);
+        			break;
     			}
     			else {
-    				flag = flag.getNext();
+    				if(flag == list.getFirstNode()) {
+    					list.addFirst(newNode);
+    					break;
+    				}
+    				else {
+    					list.addBefore(flag, newNode);
+    					break;
+    				}
     			}
     		}
     	}
-
     }
     
 
